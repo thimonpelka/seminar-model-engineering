@@ -3,6 +3,6 @@ run-llama:
 	ollama serve
 	ollama pull llama3.2
 
-run_app:
+run-app:
 	pip install -r requirements.txt
 	python main.py

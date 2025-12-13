@@ -19,15 +19,4 @@
 
 ## **2. Quickstart**
 
-### Install Ollama
-curl -fsSL https://ollama.ai/install.sh | sh
-
-### Start it and pull a model
-ollama serve
-ollama pull llama3.2
-
-### Install Python deps
-pip install requests
-
-### Run the script
-python main.py
+Run `make run-llama` and `run-app` next to each other.
