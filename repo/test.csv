@@ -1,0 +1,19 @@
+Name,Description,Classes,Associations
+m1,A model about state machines.,"StateMachine(string name)
+State(string name)
+Transition()","1 StateMachine contain * State
+1 StateMachine contain * Transition
+1 Transition contain 1 State
+1 Transition contain 1 State"
+m2,A model about class diagramas.,"Classifier(string name)
+Class()
+Attribute(string name)","Class extends Classifier
+1 Class contain * Attribute"
+m3,A model about a shop.,"Customer(int id)
+Order(int id)
+Cart(int id)","1 Customer contain * Order
+1 Customer contain * Cart "
+m4,A model about a card game.,"Player()
+Card()
+Deck()","1 Player contain 1 Deck
+1 Deck contain * Card"

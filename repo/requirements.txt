@@ -1,0 +1,7 @@
+hydra-core==1.3.1
+omegaconf==2.3.0
+openai==0.27.1
+# openai==0.26.4 no chat gpt
+pandas==1.5.3
+tqdm==4.64.1
+wandb==0.13.10

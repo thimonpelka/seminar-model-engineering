@@ -1,0 +1,18 @@
+wandb:
+  activate: True
+  project: "llm-model-generation"
+  entity: "llm-winners"
+
+input_output:
+  csv: "models.csv"
+  output_folder: runs/${running_params.llm}
+
+running_params:
+  cot: 0
+  shots: ["H2S"]
+  llm: "chatgpt"
+  temperature: 0.7
+  max_tokens: 1024
+  top_p: 1
+  frequency_penalty: 0
+  presence_penalty: 0
