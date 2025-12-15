@@ -50,7 +50,10 @@ def generate_prompts(dataset, shots):
         prompt_string = f"{header}\n" \
                         f"Description: {d}\n" 
         prompt_list.append({"description": d,
+                            "model": "llama3.2",
                             "prompt": prompt_string,
+                            "system": "",
+                            "stream": False,
                             "name": i})
 
     return prompt_list
