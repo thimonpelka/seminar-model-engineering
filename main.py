@@ -223,6 +223,8 @@ When the user asks you to validate or generate code, respond with a JSON functio
 or
 [{"action": "generate_code", "model": "...model text...", "language": "python"}]
 
+Valid languages are 'python' and 'java'.
+
 If you want to do multiple actions then generate a list of actions similar to:
 
 [
@@ -289,18 +291,26 @@ class Course {
 }
 @enduml"""
 
-    print("Example 1: Validating a model")
+    print("\n\nExample: Validating a model:")
+    prompt = f"Please validate this model:\n{example_model}"
+    print()
     print("-" * 50)
-    result = agent.validator.validate_model(example_model)
-    print(json.dumps(result, indent=2))
+    response = agent.process_request(
+        f"{prompt}\n{
+            example_model}"
+    )
+    print(response)
 
-    print("\n\nExample 2: Generating Python code")
+    print("\n\nExample: Generating code:")
+    prompt = f"Please generate python code for this model:\n{example_model}"
+    print()
     print("-" * 50)
-    result = agent.code_gen.generate_code(example_model, "python")
-    if result["success"]:
-        print(result["code"])
+    response = agent.process_request(
+        f"{prompt}\n{example_model}"
+    )
+    print(response)
 
-    print("\n\nExample 3: Using the agent")
+    print("\n\nExample: Validating the models and generating code:")
     print("-" * 50)
     response = agent.process_request(
         f"Please validate this model and then generate Python code:\n{
