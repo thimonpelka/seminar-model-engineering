@@ -1,4 +1,5 @@
 import json
+import traceback
 import subprocess
 import os
 from typing import Dict, List, Optional
@@ -218,26 +219,36 @@ You have access to two tools:
 2. generate_code(model_text, language) - Generates code from models
 
 When the user asks you to validate or generate code, respond with a JSON function call like:
-{"action": "validate_model", "model": "...model text..."}
+[{"action": "validate_model", "model": "...model text..."}]
 or
-{"action": "generate_code", "model": "...model text...", "language": "python"}
+[{"action": "generate_code", "model": "...model text...", "language": "python"}]
 
-If the user is just asking questions, respond normally."""
+If you want to do multiple actions then generate a list of actions similar to:
+
+[
+  {"action": "validate_model", "model": "...model text..."},
+  {"action": "generate_code", "model": "...model text...", "language": "python"}
+]
+
+Please make sure you return syntactically valid json if you want to perform an action.
+
+If the user is just asking questions, respond normally.
+"""
 
         # Get LLM decision
         llm_response = self.call_llm(user_request, system_prompt)
 
         # Try to parse as JSON (function call)
         try:
-            if "{" in llm_response and "}" in llm_response:
-                json_start = llm_response.index("{")
-                json_end = llm_response.rindex("}") + 1
-                action_data = json.loads(llm_response[json_start:json_end])
-
+            print(llm_response)
+            actions = json.loads(llm_response)
+            for action_data in actions:
                 if action_data.get("action") == "validate_model":
                     result = self.validator.validate_model(
                         action_data["model"])
-                    return f"Validation Result:\n{json.dumps(result, indent=2)}"
+                    if not result["valid"]:
+                        return f"Validation Result:\n{json.dumps(result, indent=2)}"
+                    print("Validation succesful")
 
                 elif action_data.get("action") == "generate_code":
                     result = self.code_gen.generate_code(
@@ -248,8 +259,9 @@ If the user is just asking questions, respond normally."""
                         return f"Generated Code:\n\n{result['code']}"
                     else:
                         return f"Error: {result['error']}"
-        except:
-            pass
+        except Exception as e:
+            print(f"Error ocurred: {e}")
+            print(traceback.format_exc())
 
         return llm_response
 

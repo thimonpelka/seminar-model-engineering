@@ -31,9 +31,9 @@ def save_results_wandb(outputs, args):
 def main(cfg: DictConfig):
     dataset = pd.read_csv(cfg.input_output.csv)
     
-    if cfg.running_params.llm == 'gpt3':
+    if True:
         prompts = generate_prompts(dataset, cfg.running_params.shots)
-        outputs = run_llm(prompts, cfg.running_params.llm, cfg.running_params.temperature,
+        outputs = run_llm(prompts, "", cfg.running_params.temperature,
                         cfg.running_params.max_tokens, cfg.running_params.top_p, cfg.running_params.frequency_penalty,
                         cfg.running_params.presence_penalty)
         

@@ -5,8 +5,8 @@ import openai
 import requests
 from tqdm import tqdm
 
-openai.api_key = os.environ['OPEN_AI_TOKEN']
-HF_TOKEN = os.environ['HF_TOKEN']
+# openai.api_key = os.environ['OPEN_AI_TOKEN']
+# HF_TOKEN = os.environ['HF_TOKEN']
 GPT3_OPEN_AI_ENGINE = 'text-davinci-003'
 CHAT_GPT_OPEN_AI_ENGINE = 'text-chat-davinci-002-20221122'
 API_URL = "https://api-inference.huggingface.co/models"
@@ -15,7 +15,12 @@ API_URL = "https://api-inference.huggingface.co/models"
 def query_hf(payload, model, parameters=None, options={'use_cache': False}):
     response = requests.post("http://localhost:11434/api/generate", json=payload)
 
-    return response
+    if response.status_code == 200:
+        return response.json()["response"]
+    else:
+        print(f"response: {response}")
+        print(f"Error calling LLM: {response.status_code} {response.reason}")
+        raise Exception
 
 
 def run_llm(prompts, llm, temperature, max_tokens, top_p, frequency_penalty, presence_penalty):
@@ -48,13 +53,14 @@ def run_llm(prompts, llm, temperature, max_tokens, top_p, frequency_penalty, pre
                 # TODO, this is also harcoded
                 # TODO penalty, top_p, and other parameters
             }
-            response = query_hf(payload=dic["prompt"],
+            response = query_hf(payload=dic,
                                 model=llm,
                                 parameters=parameters,
                                 options={'use_cache': False})
+
             # TODO here, the response also includes the prompt :(
             generated_texts.append({"description": dic["description"],
-                                    "generated_text": response[0]['generated_text'][len(dic["prompt"]):],
+                                    "generated_text": response,
                                     "name": dic["name"],
                                     "prompt": dic["prompt"]})
     return generated_texts
@@ -100,6 +106,9 @@ def run_llm_chatGPT(prompts, llm, temperature, max_tokens, top_p, frequency_pena
                                 model=llm,
                                 parameters=parameters,
                                 options={'use_cache': False})
+            print("Response: ", response)
+            print("Response: ", response)
+            print("Response: ", response)
             # TODO here, the response also includes the prompt :(
             generated_texts.append({"description": dic["description"],
                                     "generated_text": response[0]['generated_text'][len(dic["prompt"]):],
