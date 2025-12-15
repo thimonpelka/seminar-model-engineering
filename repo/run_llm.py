@@ -13,11 +13,9 @@ API_URL = "https://api-inference.huggingface.co/models"
 
 
 def query_hf(payload, model, parameters=None, options={'use_cache': False}):
-    headers = {"Authorization": f"Bearer {HF_TOKEN}"}
-    body = {"inputs": payload, 'parameters': parameters, 'options': options}
-    data = json.dumps(body)
-    response = requests.request("POST", f"{API_URL}/{model}", headers=headers, data=data)
-    return json.loads(response.content.decode("utf-8"))
+    response = requests.post("http://localhost:11434/api/generate", json=payload)
+
+    return response
 
 
 def run_llm(prompts, llm, temperature, max_tokens, top_p, frequency_penalty, presence_penalty):

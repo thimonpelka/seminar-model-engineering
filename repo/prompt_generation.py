@@ -125,7 +125,10 @@ def generate_prompts_chatgpt(dataset, shots):
         prompt.append(task_todo)
                            
         prompt_list.append({"description": d,
+                            "model": "llama3.2",
                             "prompt": prompt,
+                            "system": "",
+                            "stream": False,
                             "name": i})
 
     return prompt_list
