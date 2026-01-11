@@ -1,0 +1,14 @@
+@startuml
+class Student {
+  +name: String
+  +id: int
+  +enroll()
+  +graduate()
+}
+
+class Course {
+  +title: String
+  +credits: int
+  +addStudent()
+}
+@enduml
